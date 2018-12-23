@@ -64,7 +64,7 @@
                     weight: 15,
                     color: '#8EE9FF'
                 }).addTo(map);
-        wind.setText(') ', {repeat: true,
+        wind.setText(') ', {//repeat: true,
                             offset: 7,
                             attributes: {fill: '#007DEF',
                                          'font-weight': 'bold',
@@ -75,7 +75,7 @@
                 color: 'orange',
                 opacity: 0.8
             }).addTo(map);
-        danger.setText('\u25BA', {repeat: true,
+        danger.setText('\u25BA', {//repeat: true,
                                   offset: 6,
                                   attributes: {fill: 'red'}});
 
@@ -84,7 +84,7 @@
                 color: 'black',
                 dashArray: '2, 2'
             }).addTo(map);
-        plane.setText('\u2708     ', {repeat: true,
+        plane.setText('\u2708     ', {//repeat: true,
                                       offset: 8,
                                       attributes: {'font-weight': 'bold',
                                                    'font-size': '24'}});
@@ -235,7 +235,7 @@
 
         L.geoJson(flightsWE, {
             onEachFeature: function (feature, layer) {
-                layer.setText(feature.properties.flight, {offset: -5, repeat: 20, center: true});
+                layer.setText(feature.properties.flight, {offset: -5, repeat: false, center: true});
             },
             style: {
                 weight: 3,
@@ -263,15 +263,149 @@
                         { fill: '#ff7f00', text: 'a' },
                         { fill: '#ffff00', text: 'i' },
                         { fill: '#00ff00', text: 'n' },
-                        { fill: '#008f8f', text: 'b' },
-                        { fill: '#0000ff', text: 'o' },
-                        { fill: '#8b00ff', text: 'w' },
+                        {
+                          rotate: 180,
+                          //dy: 5,
+                          text: [
+                            { fill: '#8b00ff', text: 'w' },
+                            { fill: '#0000ff', text: 'o' },
+                            { fill: '#008f8f', text: 'b' },
+                          ]
+                        }
                     ],
                     {
-                        offset: -5,
-                        repeat: 20,
+                        //offset: -5,
+                        //repeat: 20,
                         center: true,
                         attributes: { 'font-size': '16pt', 'font-weight': 'bold', 'stroke-width': 0.5, 'stroke': '#000000' }
+                    }
+                );
+            },
+            style: {
+                weight: 2,
+                color: 'black'
+            }
+        }).addTo(map);
+
+	var snake = {
+	  "type": "FeatureCollection",
+	  "features": [
+	    {
+	      "type": "Feature",
+	      "properties": {},
+	      "geometry": {
+		"type": "LineString",
+		"coordinates": [
+		  [
+		    33.3984375,
+		    29.53522956294847
+		  ],
+		  [
+		    24.960937499999996,
+		    27.994401411046148
+		  ],
+		  [
+		    17.9296875,
+		    23.079731762449878
+		  ],
+		  [
+		    17.9296875,
+		    20.46818922264095
+		  ],
+		  [
+		    22.32421875,
+		    18.47960905583197
+		  ],
+		  [
+		    28.4765625,
+		    18.145851771694467
+		  ],
+		  [
+		    33.75,
+		    17.811456088564483
+		  ],
+		  [
+		    40.95703125,
+		    16.636191878397664
+		  ],
+		  [
+		    41.748046875,
+		    14.774882506516272
+		  ],
+		  [
+		    41.572265625,
+		    11.695272733029402
+		  ],
+		  [
+		    36.73828124999999,
+		    10.574222078332806
+		  ],
+		  [
+		    31.113281249999996,
+		    9.362352822055605
+		  ],
+		  [
+		    24.521484375,
+		    8.494104537551882
+		  ],
+		  [
+		    22.67578125,
+		    11.609193407938953
+		  ],
+		  [
+		    19.599609375,
+		    13.496472765758952
+		  ],
+		  [
+		    15.8203125,
+		    11.26461221250444
+		  ],
+		  [
+		    15.908203125,
+		    5.7908968128719565
+		  ],
+		  [
+		    18.720703125,
+		    1.7575368113083254
+		  ],
+		  [
+		    22.8515625,
+		    -0.5273363048115043
+		  ],
+		  [
+		    27.421875,
+		    -0.17578097424708533
+		  ],
+		  [
+		    30.05859375,
+		    4.039617826768437
+		  ],
+		  [
+		    31.201171875,
+		    6.664607562172573
+		  ],
+		  [
+		    36.650390625,
+		    7.536764322084078
+		  ],
+		  [
+		    39.7265625,
+		    4.653079918274051
+		  ]
+		]
+	      }
+	    }
+	  ]
+	};
+
+        L.geoJson(snake, {
+            onEachFeature: function (feature, layer) {
+                layer.setText(
+                    'Road',
+                    {
+                        repeat: 20,
+                        center: false,
+                        attributes: { 'font-size': '12pt', 'font-weight': 'bold', 'stroke-width': 0.5, 'stroke': '#000000' }
                     }
                 );
             },

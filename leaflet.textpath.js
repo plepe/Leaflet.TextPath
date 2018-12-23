@@ -112,6 +112,10 @@ var PolylineTextPath = {
         }
 
         if (options.repeat !== false) {
+            var singleText = text
+            var singleTextTurned = turnText(singleText)
+            text = [ singleText ]
+
             /* Compute single pattern length */
             if (textLength === null) {
               textLength = this._getLength(text, options);
@@ -122,18 +126,29 @@ var PolylineTextPath = {
 
             /* Create string as long as path */
             var repeatDistance = parseFloat(options.repeat) || 0
+            var pos = textLength
             var spacingBalance = 0
-            var singleText = text
+            console.log(0, repeatDistance)
             for (var i = 1; i < Math.floor((this._path.getTotalLength() + repeatDistance) / (textLength + repeatDistance)); i++) {
                 var spacesCount = Math.round((repeatDistance + spacingBalance) / slength)
                 spacingBalance = repeatDistance - (spacesCount * slength)
 
-                if (Array.isArray(singleText)) {
+                pos += spacesCount * slength
+                var posBegin = this._path.getPointAtLength(pos)
+                var posEnd = this._path.getPointAtLength(pos + repeatDistance)
+                var leftToRight = posEnd.x >= posBegin.x
+                console.log(i, pos, posBegin, posEnd, leftToRight)
+
+                if (leftToRight) {
                     text = text.concat([{ text: '\u00A0'.repeat(spacesCount) }], singleText)
                 } else {
-                    text += '\u00A0'.repeat(spacesCount) + singleText
+                    text = text.concat([{ text: '\u00A0'.repeat(spacesCount) }], { text: singleTextTurned, rotate: 180 })
+            //textNode.setAttribute('transform','rotate(' + rotateAngle + ' '  + rotatecenterX + ' ' + rotatecenterY + ')');
                 }
+
+                pos += textLength
             }
+            console.log(pos, this._path.getTotalLength())
         }
 
         /* Put it along the path using textPath */
@@ -238,6 +253,19 @@ L.LayerGroup.include({
     }
 });
 
-
+function turnText (text) {
+    if (Array.isArray(text)) {
+        return text.reverse()
+    } else if (typeof text === 'object' && text !== null) {
+        var ret = {}
+        for (var attr in text) {
+            ret[attr] = text[attr]
+        }
+        ret.text = turnText(ret.text)
+        return ret
+    } else {
+        return text.split('').reverse().join('')
+    }
+}
 
 })();
