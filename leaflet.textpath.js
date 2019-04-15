@@ -106,7 +106,7 @@ var PolylineTextPath = {
         var finalText = [];
         var dx = 0
 
-        if (!options.allowCrop) {
+        if (!options.allowCrop || options.center) {
             if (textLength === null) {
                 textLength = this._getLength(text, options);
             }
